@@ -54,3 +54,16 @@ Cyclic group = group that has a generator element, allows to generate every othe
 
 Product of groups exist and are useful.
 
+### Ring
+It is a set with two binary operators such that:
+- under first binary operator, the set is an abelian group
+- under second binary operator, the set is a monoid
+    - Monoid: only the inverse property is missing to make it a group
+    - if monoid is commutative, then it is an **abelian ring**
+- second binary distributes over the first
+
+
+### Field
+It is a set with two bin operators such that:
+- under the first, the set is an abelian group
+- under the second (excluding the zero element), the set is an abelian group

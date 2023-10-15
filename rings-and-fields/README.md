@@ -51,5 +51,7 @@ It is a set with two bin operators such that:
 ## Finite fields
 Those are used a lot in cryptography.
 
+One major advantage of finite fields is that arithmetic on rational numbers can be easily done. Dividing corresponds to multiplying by the inverse, so it's possible in finite fields as every number has an inverse.
 
+The most commonly used finite field in cryptography is integers modulo a prime number, written as $\mathbb{Z}_p$, with $p$ the prime number. Finite field over a prime number is sometimes called a Galois field.
 
