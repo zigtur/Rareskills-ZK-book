@@ -11,9 +11,9 @@ Chapter II: [Group Theory](./group-theory/README.md)
 
 Chapter III: [Rings and Fields](./rings-and-fields/README.md)
 
-Chapter IV: [Elliptic Curve Addition]()
+Chapter IV: [Elliptic Curve Addition](./elliptic-curve-addition/README.md)
 
-Chapter V: [Elliptic Curves in Finite Fields]()
+Chapter V: [Elliptic Curves in Finite Fields](./elliptic-curve-finite-field/README.md)
 
 Chapter VI: [Bilinear Pairings]()
 
