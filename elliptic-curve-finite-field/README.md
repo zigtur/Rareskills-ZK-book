@@ -1,5 +1,5 @@
 # Elliptic curves over finite fields
-
+*Note: for code examples, install **py_ecc** library.*
 
 In cryptography, elliptic curves are used over a finite field. 
 
