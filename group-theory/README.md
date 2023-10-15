@@ -49,8 +49,13 @@ If our transformation φ is cryptographically hard to invert, then we have homom
 ## Product of groups
 It is possible to take the product of two groups (as they are special sets).
 
-The product of two groups is a **group**.
+The product of two groups is a **group**. It is sometimes called the direct product, and can be written as $G \times G$. Notation $G \times G \rightarrow G$ will be seen in [bilinear pairing](../bilinear-pairing/README.md) part.
+
+Let's take the product of two non-equal groups $G$ and $G'$, and map a subset of it to $G''$. The set-theoretic definition is the same as the one seen in [set theory section](../set-theory/README.md).
 
 
+## Point of all this
+
+"Elliptic curve points under addition modulo p are a cyclic finite group and integers under addition are homomorphic to this group."
 
 
