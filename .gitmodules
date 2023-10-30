@@ -1,0 +1,3 @@
+[submodule "bilinear-pairing/SolZKVerifier/lib/forge-std"]
+	path = bilinear-pairing/SolZKVerifier/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std

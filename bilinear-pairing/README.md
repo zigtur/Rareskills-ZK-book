@@ -61,3 +61,53 @@ The thing to remember is that EC points are defined with more than 2 dimensions.
 
 But those points still have the properties of [cyclic groups](../group-theory/README.md#cyclic-groups). They do all the same stuffs than classic EC points.
 
+## Python code
+In the next sections, we are going to use 3 groups: $\mathbb{G}_1$, $\mathbb{G}_2$ and $\mathbb{G}_{12}$.
+
+The code can be found in [pairing.py file](./pairing.py). In this code, *py_ecc* library is used. It implements the **bn128** pairing that is used by the precompile at address 0x08 on Ethereum.
+
+
+## Ethereum implementation
+
+The **bn197** pairing is standardized on Ethereum in [EIP-197](https://eips.ethereum.org/EIPS/eip-197). The specification of the 0x08 precompile takes in a list of $\mathbb{G1}$ and $\mathbb{G2}$ points. Those are represented as $A_1, B_1, A_2, B_2, ..., A_n, B_n: A_i \in \mathbb{G1}, B_i \in \mathbb{G2}$.
+```
+A₁ = a₁G1
+B₁ = b₁G2
+A₂ = a₂G1
+B₂ = b₂G2
+...
+Aₙ = aₙG1
+Bₙ = bₙG2
+```
+
+
+A call to the 0x08 precompile returns `1` if the following is true: $A_1  B_1 + A_2 + B_2 + ... + A_n B_n = 0$. Otherwise, it returns `0`.
+
+### Justification for EIP-197 design
+
+$\mathbb{G}_{12} points are huge, so they are not returned as it would take a lot of gas to store them in memory.
+
+Moreover, the value of the output is generally not checked. Only the fact that it is equal to another pairing is generally done.
+
+In Groth16, the final step looks like $e(A₁, B₂) = e(α₁, β₂) + e(L₁, γ₂) + e(C₁, δ₂)$. But this can be written as $ 0 = e(-A₁, B₂) + e(α₁, β₂) + e(L₁, γ₂) + e(C₁, δ₂)$. Now it can be used with the Ethereum 0x08 precompile.
+
+*Note: We talked about Groth16, but most ZK algorithm have verification formula that are pretty similar.**
+
+
+## Solidity Example
+Let's prove that:
+```
+a = 4
+b = 3
+c = 6
+d = 2
+
+-ab + cd = 0
+```
+
+By using pairing, we need to prove: $e(−aG1, bG2) + e(cG1, dG2) = 0$
+### Python computation
+The [pythonComputation.py](./pythonComputation.py) file contains the code t
+
+### Solidity verification
+
