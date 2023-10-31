@@ -107,7 +107,8 @@ d = 2
 
 By using pairing, we need to prove: $e(−aG1, bG2) + e(cG1, dG2) = 0$
 ### Python computation
-The [pythonComputation.py](./pythonComputation.py) file contains the code t
+The [pythonComputation.py](./pythonComputation.py) file contains the code to compute the field elements.
 
 ### Solidity verification
 
+The [SolZKVerifier](./SolZKVerifier/src/SolZkVerifier.sol) contract allow to verify that the pairings match.

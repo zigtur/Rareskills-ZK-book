@@ -5,33 +5,35 @@ This repository contains my work on the [RareSkills ZK-book](https://www.rareski
 
 ## Table of Contents
 
-Chapter I: [Set Theory](./set-theory/README.md)
+Chapter 1: [Set Theory](./set-theory/README.md)
 
-Chapter II: [Group Theory](./group-theory/README.md)
+Chapter 2: [Group Theory](./group-theory/README.md)
 
-Chapter III: [Rings and Fields](./rings-and-fields/README.md)
+Chapter 3: [Rings and Fields](./rings-and-fields/README.md)
 
-Chapter IV: [Elliptic Curve Addition](./elliptic-curve-addition/README.md)
+Chapter 4: [Elliptic Curve Addition](./elliptic-curve-addition/README.md)
 
-Chapter V: [Elliptic Curves in Finite Fields](./elliptic-curve-finite-field/README.md)
+Chapter 5: [Elliptic Curves in Finite Fields](./elliptic-curve-finite-field/README.md)
 
-Chapter VI: [Bilinear Pairings]()
+Chapter 6: [Bilinear Pairings](./bilinear-pairing/README.md)
 
-Chapter VII: [Encrypted Polynomial Evaluation]()
+Chapter 7: [Arithmetic Circuits](./arithmetic-circuits/README.md)
 
-Chapter VIII: [Rank 1 Constraint Systems]()
+Chapter 8: [Rank 1 Constraint Systems]()
 
-Chapter IX: [Zero Knowledge Proofs with Rank 1 Constraint Systems]()
+Chapter 9: [Zero Knowledge Proofs with Rank 1 Constraint Systems]()
 
-Chapter X: [Quadratic Arithmetic Programs]()
+Chapter 10: [Quadratic Arithmetic Programs]()
 
-Chapter XI: [R1CS to QAP in Python]()
+Chapter 11: [R1CS to QAP in Python]()
 
-Chapter XII: [Quadratic Arithmetic Programs over Elliptic Curves]()
+Chapter 12: [Encrypted Polynomial Evaluation]()
 
-Chapter XIII: [Groth16 Explained]()
+Chapter 13: [Quadratic Arithmetic Programs over Elliptic Curves]()
 
-Chapter XIV: [Circom and Circomlib]()
+Chapter 14: [Groth16 Explained]()
+
+Chapter 15: [Circom and Circomlib]()
 
 
 ## Summary
@@ -67,3 +69,5 @@ It is a set with two binary operators such that:
 It is a set with two bin operators such that:
 - under the first, the set is an abelian group
 - under the second (excluding the zero element), the set is an abelian group
+
+
