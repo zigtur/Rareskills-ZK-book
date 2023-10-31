@@ -8,7 +8,7 @@ ZK circuits are used for validating a computation. As such, writing a ZK circuit
 
 All maths done are over a finite field, (mod p) will most likely be omitted in the next sections.
 
-## Example: Sudoku
+## Example: Sudoku
 
 A ZK circuit which verifies that a Sudoku is valid is developed as the following:
 - each **column** contains every digit from 1 to 9 exactly once.
@@ -20,7 +20,7 @@ Verification algorithm and solution algorithm are not always different, for exam
 Most of the time, the verification algorithm doesn't resemble the solving algorithm.
 
 
-## Example: Proving b is the inverse of a
+## Example: Proving b is the inverse of a
 The solving algorithm of this statement is $b=pow(a, -1, n)$, with $n$ being the size of the field.
 When verifying, we do not do the computation and compare the result.
 If $b$ is the inverse of $a$, then $a * b == 1$ and this is the verification algorithm.
@@ -43,5 +43,62 @@ ZK-circuits are non-linear. Modeling an arbitrary computation as a **linear** sy
 
 ## Example: Proving a binary transformation was valid
 
-$a$ is a finite field element that falls in the range \[0;15\].
+$a$ is a finite field element that falls in the range \[0;15\]. Claim is $b1, b2, b3, b4$ is the binary representation of $a$. For example, $a=11$ then $(b1, b2, b3, b4) = (1,0,1,1)$.
 
+In an arithmetic circuit, everything is a field element. So, we need to be sure that all $b1, b2, b3, b4$ have value $0$ or $1$. To constrain this, the following code can be used:
+```
+b1 * (1 - b1) == 0
+b2 * (1 - b2) == 0
+b3 * (1 - b3) == 0
+b4 * (1 - b4) == 0
+```
+*Note: If any of the $b*$ value is different than 1 or 0, then one of the check will fail.*
+
+The next step is to prove that the combination of all $b*$ is equal to $a$.
+```
+(8 * b1) + (4 * b2) + (2 * b3) + (1 * b4) == 11
+```
+
+Here we didn't recompute the binary transformation (solving algorithm) but we verified it is true (verifying algorithm).
+
+## Example: Proving a number falls into a certain range
+Using the binary transformation used before, we can prove that a number falls into the interval $[0, 2^n-1]$ where $n$ is the number of bits. If the sum of all bits isn't equal to the number, then the number must be outside the range.
+
+```
+Claim: a is in the range [0, 255]
+
+Proof: bi * (1 - bi) == 0 for i in [1…8] and (128 * b1) + (64 * b2) + … + (1 * b8) == a
+```
+
+
+## Example: Proving a > b
+This comparison can't be done easily with only addition and multiplication.
+Comparison operators traditionally used are not consistent over finite fields, when overflow and underflow are common.
+For example, $1 < (1-2)$ will lead to inconsistencies.
+
+This will be explained in a future part of ZK book.
+
+## Example: Proving x is the maximum element in a list of elements
+This requires the previous example about comparison.
+
+## Example: Proving integer division was done properly
+For finite field division, it can be done the same way as [the first example explained](#example-proving-b-is-the-inverse-of-a).
+
+If we want to prove integer division, this part can become tricky. $7/2 = 3$, but $2*3 \neq 7$. So, we need to verify two claims:
+- $3$ is the quotient of $7/2$
+- $1$ is the remainder of $7/2$
+
+In this case, the first constraint would be $quotient * divisor + remainder == numerator$. But it's not sufficient, a malicious prover could use $2*2 + 3 == 7$.
+
+The second constraint to implement is that $remainder < divisor$. This require the [comparison circuit](#example-proving-a--b).
+
+
+## Example: Proving a list was sorted
+
+If a prover claims that the list B is the list A that has been sorted, then:
+- A and B have the same length
+- B is itself sorted
+- A and B have the same elements
+
+The first two checks can be done using the previous examples. To avoid computing the mapping ourselves, we ask the prover to give us the mapping from unsorted list to sorther list.
+Then, we just verify the mapping is valid. It can be done with matrix multiplication for example.
