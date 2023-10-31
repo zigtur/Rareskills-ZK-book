@@ -43,5 +43,5 @@ ZK-circuits are non-linear. Modeling an arbitrary computation as a **linear** sy
 
 ## Example: Proving a binary transformation was valid
 
+$a$ is a finite field element that falls in the range \[0;15\].
 
-WIP
