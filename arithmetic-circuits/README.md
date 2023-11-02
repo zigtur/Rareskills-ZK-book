@@ -100,5 +100,40 @@ If a prover claims that the list B is the list A that has been sorted, then:
 - B is itself sorted
 - A and B have the same elements
 
-The first two checks can be done using the previous examples. To avoid computing the mapping ourselves, we ask the prover to give us the mapping from unsorted list to sorther list.
+The first two checks can be done using the previous examples.
+To avoid computing the mapping ourselves, we ask the prover to give us the mapping from unsorted list to sorther list.
 Then, we just verify the mapping is valid. It can be done with matrix multiplication for example.
+$$\begin{bmatrix} 0 & 1 & 0 \\ 1 & 0 & 0 \\ 0 & 0 & 1 \end{bmatrix} \begin{bmatrix} 5 \\ 4 \\ 6 \end{bmatrix} = \begin{bmatrix} 4 \\ 5 \\ 6 \end{bmatrix}$$
+
+To verify the “transformation matrix” is valid, we need to ensure each element is zero or one, and each row and column contains exactly one “1” with the rest being zeros.
+
+
+## Example: proving a bit shift
+
+To prove a bitshift, a matrix multiplication can be used like it has been done to prove a list was sorted.
+This time, the matrix will have all the "1" elements sit on a diagonal.
+This will prove the permutation is a bit shift.
+The bit shift matrix for 4 bit is $\begin{bmatrix} 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 0 \end{bmatrix}$.
+
+A [Python script](./bitshift.py) shows a 4-bit example.
+
+
+## Example: List contains no duplicates
+To check that a list contains no duplicates, the list is turned into a set and the size of the set is checked to see if equal to the size of the list.
+
+Otherwise, we ask the prover to sort the list, verify it is sorted and then check each element to see if previous element is equal.
+
+## Hash functions
+
+Cryptographic hash functions are largely a combination of bitshifts and bit-wise XOR operations.
+
+If each step of the hash function can be proven to have been executed correctly, then the entire hash function can be proven as executed correctly.
+And this, without executing the hash function.
+
+
+## Conclusion
+
+Principle: “if a claimed output of a computation is true, then the output must have requirements that are satisfied.
+If the requirements are hard to model with only addition or multiplication, we ask the prover to
+auxiliary work so we can model the requirements more easily.”
+
