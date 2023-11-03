@@ -19,9 +19,9 @@ Chapter 6: [Bilinear Pairings](./bilinear-pairing/README.md)
 
 Chapter 7: [Arithmetic Circuits](./arithmetic-circuits/README.md)
 
-Chapter 8: [Rank 1 Constraint Systems]()
+Chapter 8: [Rank 1 Constraint Systems](./rank-1-constraint-systems/README.md)
 
-Chapter 9: [Zero Knowledge Proofs with Rank 1 Constraint Systems]()
+Chapter 9: [Zero Knowledge Proofs with Rank 1 Constraint Systems](./zkp-with-r1cs/README.md)
 
 Chapter 10: [Quadratic Arithmetic Programs]()
 
