@@ -157,3 +157,37 @@ cat witness.json
 # quit dir
 popd
 ```
+### Circom Example 2: Transforming out = x * y * z * u
+
+
+The [circom-ex2.circom file](./circom-ex2.circom) translates this example in Circom language.
+
+
+### Circom Example 4: Larger example
+Let's use: $out = 3x^2y + 5xy -x - 2 y + 3$.
+
+This expression will be divided into:
+$$v_1 = 3x^2$$
+$$v_2 = v_1 y$$
+$$-v_2 + x + 2y - 3 + out = 5xy$$
+
+The [circom-ex4.circom file](./circom-ex4.circom) translates those constraints in Circom language.
+
+```bash
+# compile and create directory
+circom circom-ex4.circom --r1cs --sym --wasm
+# enter dir
+pushd circom-ex4_js
+# Write our x and y inputs
+echo '{"x": "1", "y": "2"}' > input.json
+# Generate the witness
+node generate_witness.js circom-ex4.wasm input.json witness.wtns
+# Export the witness as JSON
+snarkjs wtns export json witness.wtns witness.json
+# Check the witness against the R1CS circuit
+snarkjs wtns check ../circom-ex4.r1cs witness.wtns
+# print the witness
+cat witness.json
+# quit dir
+popd
+```
