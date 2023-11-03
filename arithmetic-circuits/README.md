@@ -118,12 +118,12 @@ The bit shift matrix for 4 bit is $\begin{bmatrix} 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 
 A [Python script](./bitshift.py) shows a 4-bit example.
 
 
-## Example: List contains no duplicates
+## Example: List contains no duplicates
 To check that a list contains no duplicates, the list is turned into a set and the size of the set is checked to see if equal to the size of the list.
 
 Otherwise, we ask the prover to sort the list, verify it is sorted and then check each element to see if previous element is equal.
 
-## Hash functions
+## Hash functions
 
 Cryptographic hash functions are largely a combination of bitshifts and bit-wise XOR operations.
 
@@ -131,7 +131,7 @@ If each step of the hash function can be proven to have been executed correctly,
 And this, without executing the hash function.
 
 
-## Conclusion
+## Conclusion
 
 Principle: “if a claimed output of a computation is true, then the output must have requirements that are satisfied.
 If the requirements are hard to model with only addition or multiplication, we ask the prover to
