@@ -58,7 +58,8 @@ Polynomials are also a ring, it has:
 ### Ring homomorphism
 Theorem: There exists a ring homomorphism from columns vectors of dimension $n$ with real numbers elements to polynomials with real coefficients.
 
+### Polynomials
+We need to think polynomial as an infinite set of pairs (x,y) instead of $a = ax^2 + bx + c$.
 
-
-
+If we want to add two polynomials, we need to define the relation that combines those two sets of pairs: cartestian product.
 
