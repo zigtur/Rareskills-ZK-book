@@ -170,4 +170,124 @@ The only indeterminate is $x$, because all values $a$ are known to the proved.
 Our QAP which can be written as $\sum\limits_{i=0}^{m} a_i u_i(x) \sum\limits_{i=0}^{m} a_i v_i(x) = \sum\limits_{i=0}^{m} a_i w_i(x)$ will not be equal to each other.
 The left term of the equation will in general have twice the degree of the polynomial on the right due to the multiplication.
 
-We need to add a *balancing term*.
+We need to add a *balancing term*. This will be a polynomial added to $W \cdot a$.
+
+This polynomial allow to get the same degree on both size of the equation.
+In fact, in the R1CS world we are doing $Ls \odot Rs = Os + 0$.
+
+
+#### Example
+Let's say $U \cdot a = x^2 + x + 1$ and $V \cdot a = 3 x^2 - 2x + 1$.
+
+When multiplying $U \cdot a$ and $V \cdot a$,
+we get $(U \cdot a)(V \cdot a) = 3 x^4 + x^3 + 2 x^2 -x + 1$.
+
+But transforming $W \cdot a$ would give a polynomial of degree 2.
+We can preserve the equality that interpolates zero at $x = 1,2,3,4$.
+
+In fact, in the R1CS world we are doing $Ls \odot Rs = Os + 0$.
+It is valid for $\phi (0)$ to be a polynomial of degree $4$.
+
+
+#### Computing the zero polynomial
+The *balancing term* is a zero polynomial at the points we need to evaluate it.
+It can be represented as the product of two polynomials: $h(x)$ and $t(x)$
+
+The target polynomial $t(x)$ needs to be zero at the point we evaluate.
+If those points are $x = 1, 2, 3$, then $t(x) = (x-1)(x-2)(x-3)$.
+
+This polynomial $t(x)$ is not secret and is constructed during the trusted setup phase
+of the zero knowledge circuit.
+
+But $t(x)$ could not be sufficient to balance the equation $(U \cdot a)(V \cdot a) = (W \cdot a) + t(x)$.
+Theorem: *When two non-zero polynomials are multiplied,
+the roots of the product is the union of the roots of the individual polynomials.*
+So, we can multiply $t(x)$ by anything except zero and it will still correspond
+to the zero vector in R1CS land.
+
+What we need to resolve now is:
+$$ \frac{(U \cdot a)(V \cdot a) - (W \cdot a)}{t(x)} = h(x)$$
+
+So, our final calculation is $(U \cdot a)(V \cdot a) = (W \cdot a) + t(x) h(x)$.
+It can also be written as $\sum\limits_{i=0}^{m} a_i u_i(x) \sum\limits_{i=0}^{m} a_i v_i(x) = \sum\limits_{i=0}^{m} a_i w_i(x) + h(x)t(x)$.
+
+#### More context
+The fact that $t(x)$ is a public polynomial matters.
+The prover is forced to compute an $h(x)$ that interpolates zero at $x=1,2,3$.
+Otherwise, the prover might pick polynomial that satifies the equation but
+doesn't correspond to the R1CS.
+
+### Back to Schwartz-Zippel
+
+So we have two polynomials:
+- $(U \cdot a)(V \cdot a)$
+- $(W \cdot a) + t(x) h(x)$
+
+The ZK trusted setup computes some points:
+$[xG], [x^2 G], [x^3 G], ..., [x^n G]$
+
+The prover computes the polynomials $(U \cdot a)$, $(V \cdot a)$, $(W \cdot a)$ and $h(x)$ by multiplying those elliptic curve points with their polynomial coefficients.
+
+*Note: In the following lines, [P] describes elliptic curves points.*
+
+For $U \cdot a$, we have:
+$$[A] = (U \cdot a)(x) = u_d(x^d) + u_{d-1}(x^{d-1}) + ... + u_1(x) + u_0$$
+$$[A] = u_d(x^d G) + u_{d-1}(x^{d-1} G) + ... + u_1(x G) + u_0 G$$
+
+For $V \cdot a$, we have:
+$$[B] = (V \cdot a)(x) = v_d(x^d) + v_{d-1}(x^{d-1}) + ... + v_1(x) + v_0$$
+$$[B] = v_d(x^d G) + v_{d-1}(x^{d-1} G) + ... + v_1(x G) + v_0 G$$
+
+For $W \cdot a$, we have:
+$$[C'] = (W \cdot a)(x) = w_d(x^d) + w_{d-1}(x^{d-1}) + ... + w_1(x) + w_0$$
+$$[C'] = w_d(x^d G) + w_{d-1}(x^{d-1} G) + ... + w_1(x G) + w_0 G$$
+
+For $h(x)t(x) = ht(x)$, we have:
+$$[HT] = ht(x) = ht_d(x^d) + ht_{d-1}(x^{d-1}) + ... + ht_1(x) + ht_0$$
+$$[HT] = ht_d(x^d G) + ht_{d-1}(x^{d-1} G) + ... + ht_1(x G) + ht_0 G$$
+
+Then, we can set $[C] = [C'] + [HT]$.
+
+Finally, the verifier computes $pairing([A], [B]) = [C]$.
+If it checks out, then the prover has a valid witness.
+
+This works because $[A], [B], [C]$ represent the polynomials evaluated at a random point,
+and polynomial equality can be checked at a single point with Schwartz-Zippel.
+
+### Important details
+In the current construction, the prover can just invent values.
+He could have taken $a, b$, computes $c=ab$ and the computes $[A] = aG$,
+$[B] = bG$ and $[C] = cG$.
+
+To avoid this, Groth16 has extra parameters in it.
+In tornado cash, those are defined as $\alpha, \beta, \gamma, \delta$.
+They are encrypted values from the trusted setup.
+They force the prover to be honest.
+
+
+
+## Real example of QAP
+### Initial state
+We have the equation $out = x_1^2 + 4 x_2^2 x_1 -2$.
+
+### Constraints
+We obtain the following quadratic constraints:
+$$x_3 = x_1 x_1$$
+$$x_4 = x_2 x_2$$
+$$out - x3 + 2 = 4x_4 x_1$$
+
+### R1CS
+
+The witness vector will be $[1, out, x_1, x_2, x_3, x_4]$.
+
+Our matrices $L, R, O$ are:
+$$L = \begin{bmatrix}0 & 0 & 1 & 0 & 0 & 0 \\ 0 & 0 & 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 0 & 0 & 4\end{bmatrix}$$
+$$R = \begin{bmatrix}0 & 0 & 1 & 0 & 0 & 0 \\ 0 & 0 & 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 & 0 & 0\end{bmatrix}$$
+$$O = \begin{bmatrix}0 & 0 & 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 0 & 0 & 1 \\ 2 & 1 & 0 & 0 & -1 & 0\end{bmatrix}$$
+
+### Homomorphism transformation
+For each column of each matrix, we will do the transformation.
+Only the first column of $L$ that contains a value will be detailed here.
+
+
+
