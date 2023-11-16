@@ -23,7 +23,7 @@ Chapter 8: [Rank 1 Constraint Systems](./rank-1-constraint-systems/README.md)
 
 Chapter 9: [Zero Knowledge Proofs with Rank 1 Constraint Systems](./zkp-with-r1cs/README.md)
 
-Chapter 10: [Quadratic Arithmetic Programs]()
+Chapter 10: [Quadratic Arithmetic Programs](./quadratic-arithmetic-programs/README.md)
 
 Chapter 11: [R1CS to QAP in Python]()
 

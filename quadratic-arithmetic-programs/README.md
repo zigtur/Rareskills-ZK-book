@@ -62,4 +62,112 @@ Theorem: There exists a ring homomorphism from columns vectors of dimension $n$ 
 We need to think polynomial as an infinite set of pairs (x,y) instead of $a = ax^2 + bx + c$.
 
 If we want to add two polynomials, we need to define the relation that combines those two sets of pairs: cartestian product.
+Let's define $P1$ and $P2$, and their cartesian product $P1 \times P2$.
+An element in the cartesian product will look like $((x_1, y_1), (x_2, y_2))$.
+We select the subset of our cartesian product where $x_1 = x_2$.
+Then, we produce the pair $(x, y_1 + y_2)$.
 
+We are combining matching paies of values from two polynomials (cartesian product), adding their $y$ values together
+and making a new pair with the shared $x$ value and summed $y$ value.
+
+Graphically, it corresponds to drawing a vertical line at $x$, adding the $y$ values of the two polynomials
+and then drawing a new curve with the $y_{sum}$ value.
+The form of the new curve will have the same $y=ax^2 + bx + c$ form.
+
+
+When we add (or do a Hadamard product) two vectors, we are doing the same thing: combining a set of points according
+to a rule defined in our set relation.
+The only difference is that vector has finite points and polynomial has infinite points.
+
+### Computing the transformation function for the homomorphism
+A polynomial is an infinite amount of points, while a n-dimensional vector only encodes a finite number of points (which is n).
+To make them fit, we decide on $n$ predetermined values of $x$ whose $y$ values will represent the elements
+of the original vector.
+
+Theorem: Given $n$ points on a cartesian $(x,y)$ plane, they can be *uniquely* interpolated by a polynomial of degree $n-1$. 
+If the degree isn't constrained, an infinite number of polynomials of degree $n-1$ or higher can interpolate those points.
+
+Example: A single point can be uniquely interpolated by a vertical line (a polynomial of degree zero). Two points can be uniquely interpolated by a straight line (a polynomial of degree one). This holds for all larger degrees.
+
+In summary, a vector can be conceptualized as a set of pairs where the first entry is the dimension and the second entry is the value.
+
+#### Example - Lagrange interpolation
+Let's say $n=3$. We choose the 3 $x$ coordinates to encode the vector, let's say $x=1, x=2, x=3$.
+If we want to encode the vector $[4, 12, 6]$, we need a polynomial resulting in the following pairs:
+$(1, 4), (2, 12), (3, 6)$.
+
+To obtain the associated polynomials, there are multiple algorithms. One of the most used is Lagrange interpolation.
+
+The [lagrange-interpolation.py](./lagrange-interpolation.py) python script shows the solution to our example.
+
+
+### Examples
+
+#### Addition homomorphism
+
+The [addition-homomorphism.py](./addition-homomorphism.py) python script shows the homomorphism of addition between two vectors and two polynomials.
+
+
+#### Hadamard product homomorphism
+
+The [hadamard-homomorphism.py](./hadamard-homomorphism.py) python script shows the homomorphism of hadamard product between two vectors and two polynomials.
+
+#### Scalar multiplication homomorphism
+
+The [scalar-homomorphism.py](./scalar-homomorphism.py) python script shows the homomorphism of scalar multiplication between two vectors and two polynomials.
+
+
+### R1CS: A * B = C
+
+When doing $Ls \odot Rs = Os$, we are doing $Ls$ which is the dot product of each of the rows of $L$ with $s$.
+
+If $Ls \odot Rs = Os$ can be computed with vector arithmetic, then it can also be computed with polynomial arithmetics.
+
+To compute $Ls, Rs, Os$, we do a scalar multiplication on each column of $L, R, S$ with the appropriate scalar value from vector $s$.
+We then use Lagrange interpolation to convert all the colums in each of the matric into polynomials,
+and then add them up all together to get a polynomial.
+**Each columns of each matrix is turned into a polynomial. Column 1 of matrix $L$ will give polynomial $u_1(x)$.** 
+
+$ToPoly(Ls) = U(x)$, $ToPoly(Rs) = V(x)$ and $ToPoly(Os) = W(x)$ are the three resulting polynomials.
+Because of homomorphism, $U(x) V(x) = W(x)$. Here our R1CS circuit is written as a single expression!
+
+**IMPORTANT: Polynomials are encoding the exact same informations as the R1CS.
+Polynomial addition and multiplication may feel different than operations on matrics,
+it should not bother us as this is a ring homomorphism.
+Information transformations will be consistent!**
+
+
+
+## QAP
+### Notation
+
+The transformation done to get polynomials from matrices can be called $\phi$.
+The following notation should now be easily understandable:
+
+![QAP notation](./images/qap-notation.webp)
+
+*Note: the witness vector $s$ is also transformed as a polynomial $a$.*
+
+### Initial transform
+
+When our R1CS matrics $L, R, O$ are written as polynomials, we have a **Quadratic Arithmetic Program**.
+
+As $U, V, W$ are vectors of polynomials of length $m$, and the witness $a$ is of length $m$, dot product is used to combine them: $(U \cdot a) ( V \cdot a ) = W \cdot a$
+
+This can also be written as: $\sum\limits_{i=0}^{m} a_i u_i(x) \sum\limits_{i=0}^{m} a_i v_i(x) = \sum\limits_{i=0}^{m} a_i w_i(x)$
+
+
+### $U \cdot a$ Notation
+Only the prover can do this dot product because he know the witness $a$.
+
+$(U \cdot a) = (u_1(x), u_2(x), ..., u_m(x)) \cdot (a_1(x), a_2(x), ..., a_m(x)) = a_1 u_1 (x) + a_2 u_2 (x) + ... + a_m u_m (x)$
+
+This expression evaluates to a single monovariate polynomial.
+The only indeterminate is $x$, because all values $a$ are known to the proved.
+
+### QAP balancing
+
+Our QAP which can be written as $\sum\limits_{i=0}^{m} a_i u_i(x) \sum\limits_{i=0}^{m} a_i v_i(x) = \sum\limits_{i=0}^{m} a_i w_i(x)$ will not be equal to each other.
+The left term of the equation will in general have twice the degree of the polynomial on the right due to the multiplication.
+
+We need to add a *balancing term*.
