@@ -27,7 +27,7 @@ Chapter 10: [Quadratic Arithmetic Programs](./quadratic-arithmetic-programs/READ
 
 Chapter 11: [R1CS to QAP in Python]()
 
-Chapter 12: [Encrypted Polynomial Evaluation]()
+Chapter 12: [Encrypted Polynomial Evaluation](./encrypted-polynomial-evaluation/README.md)
 
 Chapter 13: [Quadratic Arithmetic Programs over Elliptic Curves]()
 
