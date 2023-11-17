@@ -287,7 +287,78 @@ $$O = \begin{bmatrix}0 & 0 & 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 0 & 0 & 1 \\ 2 & 1 & 0
 
 ### Homomorphism transformation
 For each column of each matrix, we will do the transformation.
-Only the first column of $L$ that contains a value will be detailed here.
+Only the columns of $L$ that contains a value will be detailed here,
+because the zero vectors turn into the zero polynomial (obviously).
+
+The [real-example-homomorphism-transformation-1.py](./real-example-homomorphism-transformation-1.py) python script shows the homomorphism transformation for the column:
+$$\begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}$$
+
+The [real-example-homomorphism-transformation-2.py](./real-example-homomorphism-transformation-2.py) python script shows the homomorphism transformation for the column:
+$$\begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix}$$
 
 
+The [real-example-homomorphism-transformation-3.py](./real-example-homomorphism-transformation-3.py) python script shows the homomorphism transformation for the column:
+$$\begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix}$$
+
+By executing the 3 Python scripts, we are able to build a vector representing $L$:
+$$U = \begin{bmatrix}0 & 0 & 0.5 & -1 & 0 & 2 \\ 0 & 0 & -2.5 & 4 & 0 & -6 \\ 0 & 0 & 3 & -3 & 0 & 4\end{bmatrix}$$
+
+By repeating this process, we can obtain the 2 other vectors:
+$$V = \begin{bmatrix}0 & 0 & 1 & -1 & 0 & 0 \\ 0 & 0 & -4 & 4 & 0 & 0 \\ 0 & 0 & 4 & -3 & 0 & 0\end{bmatrix}$$
+$$W = \begin{bmatrix}1 & 0.5 & 0 & 0 & 0 & -1 \\ -3 & -1.5 & 0 & 0 & -1 & 4 \\ 2 & 1 & 0 & 0 & 2 & -3\end{bmatrix}$$
+
+We can see those matrices as holding the coefficients of $x^2$ (line 1), $x$ (line 2) and the constant (line 3) for each polynomial.
+
+
+### Witness multiplication
+The matrices calculated before for the $out = x_1^2 + 4 x_2^2 x_1 -2$ equation are public.
+But the witness remains private. Only the prover is able to do those steps.
+
+Let's pick $x_1 = 3$ and $x_2 = 4$.
+We can compute the following intermediate values:
+$$x_3 = x_1 x_1 = 9$$
+$$x_4 = x_2 x_2 = 16$$
+$$out - x3 + 2 = 4x_4 x_1 \Rightarrow out = 199$$
+
+So, our witness vector is $s = [1, 199, 3, 4, 9, 16]$.
+
+Now, we can compute the dot product of $U$ and the witness $s$ to get a polynomial.
+The [real-example-witness-mutliplication.py](./real-example-witness-mutliplication.py) python script shows the multiplication
+of $U$ and the witness to obtain a single polynomial.
+
+The resulting matrix is $U \cdot s = [29.5, -87.5, 61]$, which corresponds to the polynomial $29.5 x^2 - 87.5 x + 61$.
+Calculating it by manipulating polynomials instead of matrices can also be done:
+$$0 * 1 + 0 * 199 + (0.5x^2 - 2.5x + 3) * 3 + (-x^2 + 4x -3) * 4 + 0 * 9 + (2x^2 - 6x +4) * 16 = 29.5x^2 - 87.5x + 61$$
+
+As a result, we obtained $U \cdot a = 29.5 x^2 - 87.5 x + 61$.
+
+The [real-example-witness-mutliplication.py](./real-example-witness-mutliplication.py) python script also shows the multiplication
+of $V$ and $W$ by the witness to obtain the final polynomials.
+
+As a result, we obtained $V \cdot a = -x^2 + 4x$ and $W \cdot a = 84.5x^2 - 246.5 x + 171$.
+Here, we can clearly see why the balancing term is need, why $t(x)$ and $h(x)$ are needed.
+
+### Balancing term
+As explaiend before, the $t(x)$ term is pretty simple to obtain.
+It is: $t(x) = (x-1) (x-2) (x-3)$.
+Then, we only need to compute $h(x)$.
+Recall: $h(x) = \frac{(U \cdot a)(V \cdot a) - (W \cdot a)}{t(x)}$.
+
+The [real-example-balancing-term.py](./real-example-balancing-term.py) python script shows the computing
+of the balancing term to get $(U \cdot a)(V \cdot a) = (W \cdot a) + h(x)t(x).
+
+As a result, we obtained $h(x) = -29.5 x + 28.5$.
+
+### Encrypted Polynomial Evaluation
+For now, we have $(U \cdot a)(V \cdot a) = (W \cdot a) + h(x)t(x)$.
+
+By using a random point $\tau$, we calculates the following:
+$$[A] = (U \cdot a)(\tau)$$
+$$[B] = (V \cdot a)(\tau)$$
+$$[C] = (W \cdot a)(\tau)$$
+
+Then, the verifier just computes $pairing([A], [B]) = [C]$.
+
+We need to prevent the prover from inventing values that would match the equation without fitting to the R1CS.
+This is explained in [Encrypted Polynomial Evaluation](../encrypted-polynomial-evaluation/README.md).
 
