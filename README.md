@@ -25,7 +25,7 @@ Chapter 9: [Zero Knowledge Proofs with Rank 1 Constraint Systems](./zkp-with-r1c
 
 Chapter 10: [Quadratic Arithmetic Programs](./quadratic-arithmetic-programs/README.md)
 
-Chapter 11: [R1CS to QAP in Python]()
+Chapter 11: [R1CS to QAP in Python](./r1cs-to-qap/README.md)
 
 Chapter 12: [Encrypted Polynomial Evaluation](./encrypted-polynomial-evaluation/README.md)
 
