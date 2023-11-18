@@ -64,9 +64,9 @@ As the example is written, there are:
 Each term will be represented by the matrix $A$, $B$ or $C$.
 The results are:
 $$\vec{w} = [1, out, x, y, z, u, v_1, v_2]$$
-$$A = \begin{bmatrix}0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \end{bmatrix}$$
-$$B = \begin{bmatrix}0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \end{bmatrix}$$
-$$C = \begin{bmatrix}0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\ 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \end{bmatrix}$$
+$$A = \begin{bmatrix}0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \newline 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \newline 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \end{bmatrix}$$
+$$B = \begin{bmatrix}0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \newline 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \newline 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \end{bmatrix}$$
+$$C = \begin{bmatrix}0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \newline 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \newline 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \end{bmatrix}$$
 
 
 The [r1cs-ex2.py Python script](./r1cs-ex2.py) is available for this example.
@@ -98,9 +98,9 @@ $$-v_2 + x + 2y - 3 + out = 5xy$$
 Our $C \vec{w} = A \vec{w} * B \vec{w}$ results are:
 
 $$\vec{w} = [1, out, x, y, v_1, v_2]$$
-$$A = \begin{bmatrix}0 & 0 & 3 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 & 1 & 0 \\ 0 & 0 & 5 & 0 & 0 & 0 \end{bmatrix}$$
-$$B = \begin{bmatrix}0 & 0 & 1 & 0 & 0 & 0 \\ 0 & 0 & 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1 & 0 & 0 \end{bmatrix}$$
-$$C = \begin{bmatrix}0 & 0 & 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 0 & 0 & 1 \\ -3 & 1 & 1 & 2 & 0 & -1 \end{bmatrix}$$
+$$A = \begin{bmatrix}0 & 0 & 3 & 0 & 0 & 0 \newline 0 & 0 & 0 & 0 & 1 & 0 \newline 0 & 0 & 5 & 0 & 0 & 0 \end{bmatrix}$$
+$$B = \begin{bmatrix}0 & 0 & 1 & 0 & 0 & 0 \newline 0 & 0 & 0 & 1 & 0 & 0 \newline 0 & 0 & 0 & 1 & 0 & 0 \end{bmatrix}$$
+$$C = \begin{bmatrix}0 & 0 & 0 & 0 & 1 & 0 \newline 0 & 0 & 0 & 0 & 0 & 1 \newline -3 & 1 & 1 & 2 & 0 & -1 \end{bmatrix}$$
 
 
 The [r1cs-ex4.py Python script](./r1cs-ex4.py) is available for this example.

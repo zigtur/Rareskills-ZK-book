@@ -20,7 +20,7 @@ $p_{ij}$ will refer to the $j^{th}$ coefficient of the $i^{th}$ polynomial of th
 $j=0$ refers to the constant portion of the polynomial, while $j=3$ corresponds to the coefficient attached to $x^3$.
 
 Elliptic Curve points are written with square brackets with a subscript that indicates with EC group it belongs to, for example $[A]_1$ in fact corresponds to $[a G_1]$.
-Groth16 isn't required to use the bilinear pairing described with $G_1, G_2, G_12$.
+Groth16 isn't required to use the bilinear pairing described with $G_1, G_2, G_{12}$.
 In practice, it is the most common EC family used with Groth16.
 
 ### Motivation
@@ -41,8 +41,10 @@ Other existing algorithms have notably eliminated the trusted setup, or highly r
 ### Secret shifting
 The prover can fake values because he knows the values of $[A]_1, [B]_2, [C]_1$.
 We add elliptic curve points to $[A]_1$ and $[B]_2$, respectively $[\alpha G_1] = [\alpha]$ and $[\beta G_2] = [\beta G_2]$:
+
 $$[A]_1 = [A_{old}]_1 + [\alpha]_1$$
 $$[B]_2 = [B_{old}]_2 + [\beta]_2$$
+
 *Note: The prover knows the values $[A_{old}]_1 = [a_{old} G_1]_1$ and $[B_{old}]_2 = [b_{old} G_2]_2$
 
 By doing this, the prover cannot predict the result of pairing $[A]_1$ and $[B]_2$,
@@ -52,11 +54,15 @@ The $\alpha$ and $\beta$ values are generated during the trusted setup, and **mu
 Only the EC points should be kept.
 
 This shift in $A$ and $B$ still permits to create a balanced equation from the original QAP. First a recall of the QAP equation:
+
 $$\sum\limits_{i=0}^{m} a_i u_i(x) \sum\limits_{i=0}^{m} a_i v_i(x) = \sum\limits_{i=0}^{m} a_i w_i(x) + h(x)t(x)$$
 
 Now, we can add the $\alpha$ and $\beta$ values to it:
+
 $$(\alpha + \sum\limits_{i=0}^{m} a_i u_i(x)) (\beta + \sum\limits_{i=0}^{m} a_i v_i(x))$$
+
 $$= \alpha \beta + \beta \sum\limits_{i=0}^{m} a_i u_i(x) + \alpha \sum\limits_{i=0}^{m} a_i v_i(x) + \underbrace{\sum\limits_{i=0}^{m} a_i u_i(x) \sum\limits_{i=0}^{m} a_i v_i(x)}_{before\ substitution}$$
+
 $$= \alpha \beta + \beta \sum\limits_{i=0}^{m} a_i u_i(x) + \alpha \sum\limits_{i=0}^{m} a_i v_i(x) + \underbrace{\sum\limits_{i=0}^{m} a_i w_i(x) +h(x)t(x)}_{after\ substitution}$$
 $$\underbrace{(\alpha + \sum\limits_{i=0}^{m} a_i u_i(x))}_{A} \underbrace{(\beta + \sum\limits_{i=0}^{m} a_i v_i(x))}_{B} = \alpha \beta +  \underbrace{\sum\limits_{i=0}^{m} a_i (\beta u_i(x) + \alpha v_i(x) + w_i(x)) +h(x)t(x)}_{C}$$
 
@@ -67,7 +73,7 @@ In this section, we have seen how introducing shifts keep the QAP balanced.
 Now, we are going to show how this prevents forgeries if $\alpha$ and $\beta$ are unknown.
 
 The verifier formula is modified. It was $pairing([A]_1, [B]_2) == pairing([C]_1, [G_2]_2)$.
-Now, the formula is $$pairing([A]_1, [B]_2) == pairing([\alpha]_1, [\beta]_2) + pairing([C]_1, [G_2]_2)$.
+Now, the formula is $pairing([A]_1, [B]_2) == pairing([\alpha]_1, [\beta]_2) + pairing([C]_1, [G_2]_2)$.
 
 Let's demonstrate that now, the prover can't invent $A, B$ and compute $C$ or invent $C$ and derive $A$ and $B$.
 
@@ -107,6 +113,7 @@ Here are the steps for the attack:
 
 ### Adjusting the trusted setup
 Get back to the $C$ part of our QAP equation.
+
 $$C = \sum\limits_{i=0}^{m} a_i (\beta u_i(x) + \alpha v_i(x) + w_i(x)) +h(x)t(x)$$
 
 As $\beta$ will be an EC point after the trusted setup, it cannot be multiplied with the polynomial without doing a pairing.
@@ -114,6 +121,7 @@ That would cause $C$ to no longer be a $G_1$ point.
 
 But, the terms $\beta u(\tau) + \alpha v(\tau) + w(\tau)$ can be precomputed at $\tau$ during the trusted setup.
 The following is computed during setup:
+
 $$\langle \beta u_0(\tau) + \alpha v_0(\tau) + w_0(\tau), \beta u_0(\tau) + \alpha v_0(\tau) + w_0(\tau), ..., \beta u_m(\tau) + \alpha v_m(\tau) + w_m(\tau) \rangle$$
 
 *Note: here polynomials are simplified, $u_0(\tau) = u_{0,0}(\tau^0) + u_{0,1}(\tau^1) + ... + u_{0,n-1}(\tau^{n-1})$ and so on.*
@@ -145,11 +153,17 @@ The prover will use them.
 
 #### Prover steps
 The prover computes the followings:
+
 $$[A]_1 = [\alpha]_1 + \sum\limits_{i=0}^{m} a_i [u_i(\tau)]_1$$
+
 $$[B]_2 = [\beta]_2 + \sum\limits_{i=0}^{m} a_i [v_i(\tau)]_2$$
+
 $$h(x) = \frac{\sum\limits_{i=0}^{m} a_i u_i(x) \sum\limits_{i=0}^{m} a_i v_i(x) - \sum\limits_{i=0}^{m} a_i w_i(x)}{t(x)}$$
+
 $$[h(\tau)t(\tau)]_1 = \sum\limits_{i=0}^{deg(h)} h_i [\tau_i t(\tau) G_1]_1$$
+
 $$[C]_1 = \sum\limits_{i=0}^{m} a_i [\beta u_i(\tau) + \alpha v_i (\tau) + w_i(\tau)]_1 + [h(\tau)t(\tau)]_1$$
+
 $$proof = ([A]_1, [B]_2, [C]_1)$$
 
 *Note: all EC points needed by the prover for its calculations have been precomputed during trusted setup.*
@@ -160,6 +174,7 @@ If the equality holds, then verifier accepts the proof.
 
 ## Prevent forgery - part 2: separating public and private inputs with $\gamma$ and $\delta$
 We split the QAP into the portions computed by the verifier (public inputs) and the prover (private inputs).
+
 $$\sum\limits_{i=0}^{m} a_i w_i(x) = \underbrace{\sum\limits_{i=0}^{l} a_i w_i(x)}_{public\ inputs} + \underbrace{\sum\limits_{i=l+1}^{m} a_i w_i(x)}_{private\ inputs}$$
 
 Here $l$ refers to the first $l$ elements of the witness vector which are public.
@@ -168,10 +183,12 @@ So the first two elements would be public ($1$ and $out$).
 $out$ is usually public.
 
 The prover will adapt its $[C]_1$ calculations:
+
 $$[C]_1 = \sum\limits_{i=l+1}^{m} a_i [\beta u_i(\tau) + \alpha v_i (\tau) + w_i(\tau)]_1 + [h(\tau)t(\tau)]_1$$
 
 And the verifier will have to compute the public portion using the elliptic curve points from the trusted setup.
 The verification formula changes a bit:
+
 $$pairing([A]_1, [B]_2) == pairing([\alpha]_1, [\beta]_2) + pairing([C]_1, [G_2]_2) + pairing(\sum\limits_{i=0}^{l} a_i [\beta u_i(\tau) + \alpha v_i (\tau) + w_i(\tau)]_1, [G_2]_2)$$
 
 
@@ -202,6 +219,7 @@ Our trusted setup with public inputs is a little bit modified:
 
 #### Verification step with $\gamma$ and $\delta$
 Instead of pairing with $G_2$, we pair with $[\gamma]$ and $[\delta]$:
+
 $$pairing([A]_1, [B]_2) == pairing([\alpha]_1, [\beta]_2) + pairing([C]_1, [\delta]_2) + pairing(\sum\limits_{i=0}^{l} a_i [\beta u_i(\tau) + \alpha v_i (\tau) + w_i(\tau)]_1, [\gamma]_2)$$
 
 The $[\gamma]$ and $[\delta]$ will cancel out if the prover truly used the polynomials from the
@@ -219,9 +237,13 @@ then they can verify their guess is correct by comparing their constructed proof
 To enforce true ZK, another random shift is added during the **proving phase** instead of the
 trusted setup phase.
 The prover samples two random field elements $r$ and $s$ and shifts their values accordingly:
+
 $$[A]_1 = [\alpha]_1 + \sum\limits_{i=0}^{m} a_i [u_i(\tau)]_1 + r[\delta]_1$$
+
 $$[B]_2 = [\beta]_2 + \sum\limits_{i=0}^{m} a_i [v_i(\tau)]_2 + s[\delta]_2$$
+
 $$[B]_1 = [\beta]_1 + \sum\limits_{i=0}^{m} a_i [v_i(\tau)]_1 + s[\delta]_1$$
+
 $$[C]_1 = \sum\limits_{i=0}^{m} a_i [\beta u_i(\tau) + \alpha v_i (\tau) + w_i(\tau)]_1 + [h(\tau)t(\tau)]_1 + s[A]_1 + r[B]_1 - rs[\delta]_1$$
 
 *Note: This requires $[\beta]_1$ and $[\delta]_1$ to be produced during the trusted setup.*
