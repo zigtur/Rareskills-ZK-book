@@ -29,7 +29,7 @@ Chapter 11: [R1CS to QAP in Python](./r1cs-to-qap/README.md)
 
 Chapter 12: [Encrypted Polynomial Evaluation](./encrypted-polynomial-evaluation/README.md)
 
-Chapter 13: [Quadratic Arithmetic Programs over Elliptic Curves]()
+Chapter 13: [Quadratic Arithmetic Programs over Elliptic Curves](./qap-over-elliptic-curve/README.md)
 
 Chapter 14: [Groth16 Explained]()
 

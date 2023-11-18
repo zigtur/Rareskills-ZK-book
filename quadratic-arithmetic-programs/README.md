@@ -270,7 +270,7 @@ They force the prover to be honest.
 ### Initial state
 We have the equation $out = x_1^2 + 4 x_2^2 x_1 -2$.
 
-### Constraints
+### Constraints
 We obtain the following quadratic constraints:
 $$x_3 = x_1 x_1$$
 $$x_4 = x_2 x_2$$
