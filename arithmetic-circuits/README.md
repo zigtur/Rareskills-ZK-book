@@ -104,7 +104,7 @@ The first two checks can be done using the previous examples.
 To avoid computing the mapping ourselves, we ask the prover to give us the mapping from unsorted list to sorther list.
 Then, we just verify the mapping is valid. It can be done with matrix multiplication for example.
 
-$$\begin{bmatrix} 0 & 1 & 0 \\ 1 & 0 & 0 \\ 0 & 0 & 1 \end{bmatrix} \begin{bmatrix} 5 \\ 4 \\ 6 \end{bmatrix} = \begin{bmatrix} 4 \\ 5 \\ 6 \end{bmatrix}$$
+$$\begin{bmatrix} 0 & 1 & 0 \newline 1 & 0 & 0 \\ 0 & 0 & 1 \end{bmatrix} \begin{bmatrix} 5 \\ 4 \\ 6 \end{bmatrix} = \begin{bmatrix} 4 \\ 5 \\ 6 \end{bmatrix}$$
 
 To verify the “transformation matrix” is valid, we need to ensure each element is zero or one, and each row and column contains exactly one “1” with the rest being zeros.
 
