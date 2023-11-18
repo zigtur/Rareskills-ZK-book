@@ -52,7 +52,7 @@ b2 * (1 - b2) == 0
 b3 * (1 - b3) == 0
 b4 * (1 - b4) == 0
 ```
-*Note: If any of the $b*$ value is different than 1 or 0, then one of the check will fail.*
+*Note: If any of the $b\*$ value is different than 1 or 0, then one of the check will fail.*
 
 The next step is to prove that the combination of all $b*$ is equal to $a$.
 ```

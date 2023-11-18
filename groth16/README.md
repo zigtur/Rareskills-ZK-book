@@ -43,6 +43,7 @@ The prover can fake values because he knows the values of $[A]_1, [B]_2, [C]_1$.
 We add elliptic curve points to $[A]_1$ and $[B]_2$, respectively $[\alpha G_1] = [\alpha]$ and $[\beta G_2] = [\beta G_2]$:
 
 $$[A]_1 = [A_{old}]_1 + [\alpha]_1$$
+
 $$[B]_2 = [B_{old}]_2 + [\beta]_2$$
 
 *Note: The prover knows the values $[A_{old}]_1 = [a_{old} G_1]_1$ and $[B_{old}]_2 = [b_{old} G_2]_2$
