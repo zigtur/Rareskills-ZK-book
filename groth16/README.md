@@ -209,9 +209,9 @@ Our trusted setup with public inputs is a little bit modified:
   - $\{\tau^i[G_2]_2\}^{n-1}_{i=0}$
 - random shift for $B$:
   - $[\beta G_2]_2$
-- powers of $\tau$ for $public inputs$:
+- powers of $\tau$ for $public\ inputs$:
   - $\{\gamma^{-1} (\beta u_i (\tau^i) + \alpha v_i (\tau^i) + w_i(\tau^i)) [G_1]_1 \}^{l}_{i=0}$
-- powers of $\tau$ for $private inputs$:
+- powers of $\tau$ for $private\ inputs$:
   - $\{\delta^{-1} (\beta u_i (\tau^i) + \alpha v_i (\tau^i) + w_i(\tau^i)) [G_1]_1 \}^{n-1}_{i=l+1}$
 - powers of $\tau$ for $h(\tau)t(\tau)$:
   - $\{\delta^{-1} \tau^i t(\tau) [G_1]_1 \}^{n-2}_{i=0}$
