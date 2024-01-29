@@ -19,7 +19,7 @@ $$x_3 = g^{5^3} = g^{125}$$
 
 The verifier will compute:
 $$y = x_3 - 4x_2 + 3 x_1 -1$$
-$$g^{39} = g^{125} \cdot 4g^{25} \cdot 3 g^{5} \cdot g^{-1} (mod\ p)$$
+$$g^{39} = g^{125} \cdot 4g^{-25} \cdot 3 g^{5} \cdot g^{-1} (mod\ p)$$
  
 As $g$ is known by the verifier, he can easily get $g^{39}$.
 Thanks to group theory magic, we can use the group of elliptic curves instead of the group of $g^n (mod\ p)$.
